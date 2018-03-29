@@ -209,9 +209,13 @@
             height: 20px;
         }
 
-        .downtime-header {
+        .downtime-header-1 {
             height: 7px;
 
+        }
+
+        .downtime-header-2 {
+            margin-left: 5px;
         }
 
         .control {
@@ -223,18 +227,27 @@
             margin-top: 18px;
             margin-left: 10px;
         }
-        
-        .downtime-insert-header{
+
+        .downtime-insert-header {
             margin-bottom: 5px;
         }
-        
-        .name{
+
+        .name {
             margin-top: 5px;
         }
-        
-        .downtimedigits{
+
+        .downtimedigits {
             height: 50px;
         }
+
+        .downtime-free {
+            display: none;
+        }
+
+        .required-fields::placeholder {
+            filter: opacity(50%);
+        }
+
 
         -->
 
@@ -250,14 +263,15 @@
 
 <body lang=RU link="#0563C1" vlink="#954F72">
     <div class="controls" style="display: block;position: absolute;">
+
         <div class="reminder">
             <p class="downtime-header">Reminder?</p>
             <input type="checkbox" id="reminder" onclick="enableReminder()" />
         </div>
         <p class="note-box">Текст на английском</p>
-        <textarea id="insert-note-en" class="textboxes">During the maintenance works</textarea><br>
+        <textarea id="insert-note-en" class="textboxes">During the maintenance works we will</textarea><br>
         <p class="note-box">Текст на русском</p>
-        <textarea id="insert-note-ru" class="textboxes">Во время проведения работ</textarea><br>
+        <textarea id="insert-note-ru" class="textboxes">Во время проведения работ мы</textarea><br>
 
         <!--
         <p class="name">Дата на английском</p>
@@ -271,28 +285,38 @@
         <!--        <input type="text" id="insert-service">-->
         <p class="name">Сервисы</p>
         <textarea id="insert-service" class="textboxes-service"></textarea><br>
-        
-            <div class="downtime-controls">
 
-                <div class="control">
-                    <p class="downtime-header">No downtime</p>
-                    <input type="checkbox" id="nodowntime" class="downtime-checkbox" onclick="noDowntime()" />
-                </div>
+        <div class="downtime-controls">
 
-
+            <div class="control">
+                <p class="downtime-header-1">No downtime</p>
+                <input type="checkbox" id="nodowntime" class="downtime-checkbox" onclick="noDowntime()" />
+                <p class="downtime-header-2">Ввести свой downtime текст </p>
+                <input type="checkbox" id="freedowntime" class="downtime-checkbox" onclick="freeDowntime()" />
             </div>
-            <div class="downtimedigits">
-                <p class="downtime-insert-header">Введите Downtime из Remedy</p>
-                <input type="text" id="downtime" value="up to 11 hours"><br><br>
-<!--                <button type="button" onclick="parseDowntime()">Заполнить Downtime </button>-->
-            </div>
+
+
+        </div>
+        <div class="downtimedigits" id="defaultdowntimeform">
+            <p class="downtime-insert-header">Введите Downtime из Remedy</p>
+            <input class="required-fields" type="text" id="downtime" placeholder="up to 8 hours"><br><br>
+
+
+            <!--                <button type="button" onclick="parseDowntime()">Заполнить Downtime </button>-->
+        </div>
+        <div class="downtime-free" id="freedowntimeform">
+            <p class="downtime-insert-header">Введите текст Downtime на английском</p>
+            <input type="text" id="downtime-free-eng"><br>
+            <p class="downtime-insert-header">Введите текст Downtime на русском</p>
+            <input type="text" id="downtime-free-ru">
+        </div>
 
         <p class="name">Дата и время начала CRQ из Remedy</p>
-        <input type="text" id="crq-date-start" value="4/4/2018 11:00:00 AM"><br>
+        <input class="required-fields" type="text" id="crq-date-start" placeholder="4/4/2018 11:00:00 AM"><br>
         <p class="name">Дата и время окончания CRQ из Remedy</p>
-        <input type="text" id="crq-date-end" value="4/4/2018 12:00:00 PM"><br><br>
+        <input class="required-fields" type="text" id="crq-date-end" placeholder="4/4/2018 12:00:00 PM"><br><br>
 
-        <button onclick="fillDateTime()">Заполнить даты </button>
+        <button onclick="fillDateTime()">Перенести данные </button>
 
     </div>
     <br>
@@ -394,27 +418,11 @@
 
 <footer>
     <script>
-        function updateNoteRu() {
-            // var note_ru = document.getElementById("insert").value;
-            document.getElementById("note-ru").innerHTML = document.getElementById("insert-note-ru").value;
-
-        }
-
-        function generateNotification() {
-            document.getElementById("note-ru").innerHTML = document.getElementById("insert-note-ru").value;
-            document.getElementById("note-eng").innerHTML = document.getElementById("insert-note-en").value;
-            document.getElementById("service-ru").innerHTML = document.getElementById("insert-service").value;
-            document.getElementById("service-eng").innerHTML = document.getElementById("insert-service").value;
-
-
-
-
-        }
-
         function noDowntime() {
 
             if (document.getElementById("nodowntime").checked) {
                 document.getElementById("downtime").disabled = true;
+                document.getElementById("downtime").value = "";
                 document.getElementById('downtime-eng').innerHTML = "service will be fully available.";
                 document.getElementById('downtime-ru').innerHTML = "сервис будет полностью доступен.";
             } else {
@@ -467,16 +475,39 @@
 
 
 
+        function freeDowntime() {
+            if (document.getElementById("freedowntime").checked) {
+
+                var defaultDowntimeField = document.getElementById("defaultdowntimeform");
+                defaultDowntimeField.setAttribute("style", "display:none");
+                var freeDowntimeField = document.getElementById("freedowntimeform");
+                freeDowntimeField.setAttribute("style", "display:block");
+
+                document.getElementById("nodowntime").disabled = true;
+                document.getElementById("downtime").value = "";
+
+                document.getElementById("nodowntime").checked = false;
+
+
+
+            } else {
+                var defaultDowntimeField = document.getElementById("defaultdowntimeform");
+                defaultDowntimeField.setAttribute("style", "display:block");
+                var freeDowntimeField = document.getElementById("freedowntimeform");
+                freeDowntimeField.setAttribute("style", "display:none");
+                document.getElementById("downtime").disabled = false;
+                document.getElementById("nodowntime").disabled = false;
+
+
+                //на всякий случай обнуляем поля свободного ввода даунтайма, если вдруг чекбокс freedowntime сняли
+                document.getElementById("downtime-free-eng").value = "";
+                document.getElementById("downtime-free-ru").value = "";
+            }
+        }
+
+
+
         function parseTime(unrefinedDate) {
-
-            //var unrefinedArray = unrefinedDate.value.split(" ");
-
-            // var notificationMonth = unrefinedArray[0].split("/")[0];
-
-
-
-
-            //var crqTime = unrefinedDate.value.split(" ")[0].split("/")[1];
 
             var crqTime = unrefinedDate.value.split(" ")[1].slice(0, -3);
             crqTime = crqTime.concat(" ").concat(unrefinedDate.value.split(" ")[2]);
@@ -484,7 +515,6 @@
             var input = crqTime,
                 matches = input.toLowerCase().match(/(\d{1,2}):(\d{2}) ([ap]m)/);
             var refinedTime;
-
 
 
             switch (matches[0]) {
@@ -503,102 +533,102 @@
             return refinedTime;
 
 
-
         }
+
 
         function fillDateTime() {
 
-            //Забираем инфу из форм
-            document.getElementById("note-ru").innerHTML = document.getElementById("insert-note-ru").value;
-            document.getElementById("note-eng").innerHTML = document.getElementById("insert-note-en").value;
-            document.getElementById("service-ru").innerHTML = document.getElementById("insert-service").value;
-            document.getElementById("service-eng").innerHTML = document.getElementById("insert-service").value;
+            if ((!document.getElementById("crq-date-start").value == "") && (!document.getElementById("crq-date-end").value == "")) {
+
+                //Забираем инфу из форм
+                document.getElementById("note-ru").innerHTML = document.getElementById("insert-note-ru").value;
+                document.getElementById("note-eng").innerHTML = document.getElementById("insert-note-en").value;
+
+                document.getElementById("service-ru").innerHTML = document.getElementById("insert-service").value;
+                document.getElementById("service-eng").innerHTML = document.getElementById("insert-service").value;
 
 
 
+                //приводим дату, время, месяц в красивый вид
+                var formDateStart = document.getElementById('crq-date-start'),
+                    monthsArrayStart = numberToMonth(formDateStart),
+                    dayStart = formDateStart.value.split(" ")[0].split("/")[1],
+                    timeStart = parseTime(formDateStart);
 
+                var formDateEnd = document.getElementById('crq-date-end'),
+                    monthsArrayEnd = numberToMonth(formDateEnd),
+                    dayEnd = formDateEnd.value.split(" ")[0].split("/")[1],
+                    timeEnd = parseTime(formDateEnd);
 
-            //приводим дату, время, месяц в красивый вид
-            var formDateStart = document.getElementById('crq-date-start'),
-                monthsArrayStart = numberToMonth(formDateStart),
-                dayStart = formDateStart.value.split(" ")[0].split("/")[1],
-                timeStart = parseTime(formDateStart);
-
-            var formDateEnd = document.getElementById('crq-date-end'),
-                monthsArrayEnd = numberToMonth(formDateEnd),
-                dayEnd = formDateEnd.value.split(" ")[0].split("/")[1],
-                timeEnd = parseTime(formDateEnd);
-
-            var dateEng = dayStart + " " + monthsArrayStart[0],
-                dateRu = dayStart + " " + monthsArrayStart[1],
-                interval = timeStart + "-" + timeEnd;
-
+                var dateEng = dayStart + " " + monthsArrayStart[0],
+                    dateRu = dayStart + " " + monthsArrayStart[1],
+                    interval = timeStart + "-" + timeEnd;
 
 
 
+                //если CRQ более чем на 1 день
+                if (formDateStart.value.split(" ")[0] != formDateEnd.value.split(" ")[0]) {
+
+
+                    //собрали красивые данные в строку
+                    var intervalDateEng = dayStart + " " + monthsArrayStart[0] + " " + timeStart + " — <br>" + dayEnd + " " + monthsArrayEnd[0] + " " + timeEnd,
+                        intervalDateRu = dayStart + " " + monthsArrayStart[1] + " " + timeStart + " — <br>" + dayEnd + " " + monthsArrayEnd[1] + " " + timeEnd;
 
 
 
+                    //залили в нотификацию
+                    document.getElementById("date-eng").innerHTML = intervalDateEng;
+                    document.getElementById("date-ru").innerHTML = intervalDateRu;
 
-            //если CRQ более чем на 1 день
-            if (formDateStart.value.split(" ")[0] != formDateEnd.value.split(" ")[0]) {
+                    document.getElementById("time-eng").innerHTML = "";
+                    document.getElementById("time-ru").innerHTML = "";
 
+                    var emptySpaceRu = document.getElementById("toggleBoldTimeRu");
+                    var emptySpaceEng = document.getElementById("toggleBoldTimeEng");
 
-                //собрали красивые данные в строку
-                var intervalDateEng = dayStart + " " + monthsArrayStart[0] + " " + timeStart + " — <br>" + dayEnd + " " + monthsArrayEnd[0] + " " + timeEnd,
-                    intervalDateRu = dayStart + " " + monthsArrayStart[1] + " " + timeStart + " — <br>" + dayEnd + " " + monthsArrayEnd[1] + " " + timeEnd;
+                    emptySpaceEng.setAttribute("style", "display:none");
+                    emptySpaceRu.setAttribute("style", "display:none");
 
+                } else {
 
+                    //если стандартная нотификация(работы в 1 день)
+                    document.getElementById("date-ru").innerHTML = dateRu;
+                    document.getElementById("date-eng").innerHTML = dateEng;
 
-                //залили в нотификацию
-                document.getElementById("date-eng").innerHTML = intervalDateEng;
-                document.getElementById("date-ru").innerHTML = intervalDateRu;
+                    document.getElementById("time-ru").innerHTML = interval;
+                    document.getElementById("time-eng").innerHTML = interval;
 
-                document.getElementById("time-eng").innerHTML = "";
-                document.getElementById("time-ru").innerHTML = "";
+                    var emptySpaceRu = document.getElementById("toggleBoldTimeRu");
+                    var emptySpaceEng = document.getElementById("toggleBoldTimeEng");
 
-                //document.getElementById("toggleBoldTimeRu").style.display = "none";
-                //document.getElementById("toggleBoldTimeEng").style.display = "none";
+                    emptySpaceEng.setAttribute("style", "display:inline");
+                    emptySpaceRu.setAttribute("style", "display:inline");
 
-                var emptySpaceRu = document.getElementById("toggleBoldTimeRu");
-                var emptySpaceEng = document.getElementById("toggleBoldTimeEng");
-
-                emptySpaceEng.setAttribute("style", "display:none");
-                emptySpaceRu.setAttribute("style", "display:none");
-
-            } else {
-
-                //если стандартная нотификация(работы в 1 день)
-                document.getElementById("date-ru").innerHTML = dateRu;
-                document.getElementById("date-eng").innerHTML = dateEng;
-                document.getElementById("time-ru").innerHTML = interval;
-                document.getElementById("time-eng").innerHTML = interval;
-
-                var emptySpaceRu = document.getElementById("toggleBoldTimeRu");
-                var emptySpaceEng = document.getElementById("toggleBoldTimeEng");
-
-                emptySpaceEng.setAttribute("style", "display:inline");
-                emptySpaceRu.setAttribute("style", "display:inline");
-
-            }
-            
-            
-            //заполнили даунтайм
-            parseDowntime();
+                }
 
 
+                //заполнили даунтайм
+                //На всякий случай проверяем, что дефолтное значение текстбокса downtime не пустое, пустое оно по умолчанию, либо если нажат чекбокс freedowntime; поле чистится в функции freeDowntime()
 
-            //alert("День: " + refinedDayStart + " Месяц: " + refinedMonthsArrayStart + " Время: " + refinedTimeStart);
 
+                if (!document.getElementById("nodowntime").checked) {
+                    if (!document.getElementById("downtime").value == "") {
+                        parseDowntime();
+                    } else {
+                        document.getElementById('downtime-eng').innerHTML = document.getElementById("downtime-free-eng").value;
+                        document.getElementById('downtime-ru').innerHTML = document.getElementById("downtime-free-ru").value;
+                    }
+
+                }
+
+
+            } else alert("Заполните поля начала и окончания CRQ");
         }
 
 
         function parseDowntime() {
+
             var dt = document.getElementById("downtime").value;
-
-
-
-            // alert(dt);
 
             if (/^((\d{1,2}) x (\d{1,2}) min)$/.test(dt)) {
                 var qty = dt.split(" ")[0],
@@ -612,7 +642,6 @@
                 document.getElementById("downtime-eng").innerHTML = "service will be unavailable for " + qty + " times " + minutes + " minutes each.";
                 document.getElementById("downtime-ru").innerHTML = "сервис будет недоступен " + qty + ruQtyModifier + minutes + " минут.";
 
-                // alert(qty + minutes);
             } else if (/^(up to (\d{1,2}) (day|days|hour|hours|min))$/.test(dt)) {
 
                 var downtime = dt.split(" ")[2],
@@ -646,14 +675,10 @@
 
                 }
 
+
                 document.getElementById("downtime-eng").innerHTML = "service will be unavailable for " + downtime + " " + measureEng + ".";
                 document.getElementById("downtime-ru").innerHTML = "сервис будет недоступен " + downtime + " " + measureRu + ".";
 
-
-
-                // 2 3 4 22 23 24 
-                // 1 21  
-                //alert(downtime + " " + measureRu);
 
             }
 
