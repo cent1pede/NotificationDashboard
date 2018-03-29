@@ -206,14 +206,21 @@
         .downtime-controls {
             display: flex; //justify-content: space-between;
             width: 400px;
-            height: 70px;
+            height: 50px;
         }
 
-        .downtime-header {}
+        .downtime-header {
+            height: 7px;
+
+        }
 
         .control {
-            margin: 0 7px 0 7px;
+            display: flex; // align-items: center;
+        }
 
+        .downtime-checkbox {
+            margin-top: 18px;
+            margin-left: 10px;
         }
 
         -->
@@ -256,21 +263,15 @@
 
                 <div class="control">
                     <p class="downtime-header">No downtime</p>
-                    <input type="radio" id="nodowntime" name="downtime" onclick="noDowntime()" />
+                    <input type="checkbox" id="nodowntime" class="downtime-checkbox" onclick="noDowntime()" />
                 </div>
-                <div class="control">
-                    <p class="downtime-header">X раз по Y</p>
-                    <input type="radio" id="downtime-x-y" name="downtime" onclick="noDowntime()" />
-                </div>
-                <div class="control">
-                    <p class="downtime-header">X часов/минут</p>
-                    <input type="radio" id="downtime-x" name="downtime" onclick="noDowntime()" />
-                </div>
+
 
             </div>
             <div class="downtimedigits">
                 <p>Введите Downtime из Remedy</p>
-                <input type="text" id="downtime"><br>
+                <input type="text" id="downtime" value="up to 11 hours"><br><br>
+                <button type="button" onclick="parseDowntime()">Заполнить Downtime </button>
             </div>
         </form>
         <p class="name">Дата и время начала CRQ из Remedy</p>
@@ -569,40 +570,57 @@
         }
 
 
+        function parseDowntime() {
+            var dt = document.getElementById("downtime").value;
 
 
-        //        function copyClip() {
-        //            var copyBodyBtn = document.querySelector('#clipbtn');
-        //            copyBodyBtn.addEventListener('click',
-        //                function(event) {
-        //                    var copyBody = document.querySelector('.word');
-        //                    copyBody.select();
-        //
-        //                    try {
-        //                        var successful = document.execCommand('copy');
-        //                        var msg = successful ? 'successful' : 'unsuccessful';
-        //                        console.log('Copying text command was ' + msg);
-        //                    } catch (err) {
-        //                        console.log('Oops, unable to copy');
-        //                    }
-        //
-        //                }
-        //            )
-        //        };
-        //
-        //        function copyToClipboard(element) {
-        //            var $temp = $("<input>");
-        //            $("body").append($temp);
-        //            $temp.val($(element).text()).select();
-        //            document.execCommand("copy");
-        //            $temp.remove();
-        //        }
-        //
-        //        window.onload = function() {
-        //            copyClip();
-        //            
-        //                
-        //        }
+
+            // alert(dt);
+
+            if (/^((\d{1,2}) x (\d{1,2}) min)$/.test(dt)) {
+                var qty = dt.split(" ")[0],
+                    minutes = dt.split(" ")[2];
+
+                var ruQtyModifier = " раза по ";
+
+                if (parseInt(qty) > 4) ruQtyModifier = " раз по ";
+
+
+                document.getElementById("downtime-eng").innerHTML = "service will be unavailable for " + qty + " times " + minutes + " minutes each.";
+                document.getElementById("downtime-ru").innerHTML = "сервис будет недоступен " + qty + ruQtyModifier + minutes + " минут.";
+
+                // alert(qty + minutes);
+            } else if (/^(up to (\d{1,2}) (day|days|hour|hours|min))$/.test(dt)) {
+
+                var downtime = dt.split(" ")[2],
+                    measureEng = dt.split(" ")[3],
+                    measureRu;
+
+              /*  switch (measureEng) {
+                    case :
+                        
+                        break;
+                    case:
+
+                        break;
+                    case:
+
+                        break;
+                    case:
+
+                        break;
+                    case:
+
+                        break;
+
+                }*/
+
+
+                alert(downtime + " " + measureEng);
+
+            }
+
+        }
 
     </script>
 </footer>
