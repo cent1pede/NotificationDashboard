@@ -206,7 +206,7 @@
         .downtime-controls {
             display: flex; //justify-content: space-between;
             width: 400px;
-            height: 50px;
+            height: 20px;
         }
 
         .downtime-header {
@@ -215,12 +215,25 @@
         }
 
         .control {
-            display: flex; // align-items: center;
+            display: flex;
+
         }
 
         .downtime-checkbox {
             margin-top: 18px;
             margin-left: 10px;
+        }
+        
+        .downtime-insert-header{
+            margin-bottom: 5px;
+        }
+        
+        .name{
+            margin-top: 5px;
+        }
+        
+        .downtimedigits{
+            height: 50px;
         }
 
         -->
@@ -258,7 +271,7 @@
         <!--        <input type="text" id="insert-service">-->
         <p class="name">Сервисы</p>
         <textarea id="insert-service" class="textboxes-service"></textarea><br>
-        <form action="">
+        
             <div class="downtime-controls">
 
                 <div class="control">
@@ -269,11 +282,11 @@
 
             </div>
             <div class="downtimedigits">
-                <p>Введите Downtime из Remedy</p>
+                <p class="downtime-insert-header">Введите Downtime из Remedy</p>
                 <input type="text" id="downtime" value="up to 11 hours"><br><br>
-                <button type="button" onclick="parseDowntime()">Заполнить Downtime </button>
+<!--                <button type="button" onclick="parseDowntime()">Заполнить Downtime </button>-->
             </div>
-        </form>
+
         <p class="name">Дата и время начала CRQ из Remedy</p>
         <input type="text" id="crq-date-start" value="4/4/2018 11:00:00 AM"><br>
         <p class="name">Дата и время окончания CRQ из Remedy</p>
@@ -401,12 +414,16 @@
         function noDowntime() {
 
             if (document.getElementById("nodowntime").checked) {
+                document.getElementById("downtime").disabled = true;
                 document.getElementById('downtime-eng').innerHTML = "service will be fully available.";
                 document.getElementById('downtime-ru').innerHTML = "сервис будет полностью доступен.";
             } else {
+                document.getElementById("downtime").disabled = false;
                 document.getElementById('downtime-eng').innerHTML = "service will be unavailable for 2 times 5&nbsp;minutes each.";
                 document.getElementById('downtime-ru').innerHTML = "сервис будет недоступен 2 раза по 5 минут.";
             }
+
+
 
         }
 
@@ -420,6 +437,8 @@
                 document.getElementById('alert-eng').innerHTML = "During preventive maintenance works,";
                 document.getElementById('alert-ru').innerHTML = "Будут проводиться профилактические работы,";
             }
+
+
 
         }
 
@@ -562,6 +581,10 @@
                 emptySpaceRu.setAttribute("style", "display:inline");
 
             }
+            
+            
+            //заполнили даунтайм
+            parseDowntime();
 
 
 
@@ -596,27 +619,41 @@
                     measureEng = dt.split(" ")[3],
                     measureRu;
 
-              /*  switch (measureEng) {
-                    case :
-                        
+                switch (measureEng) {
+                    case "hours":
+                        if (/^(22|23|24|4|3|2)$/.test(downtime)) {
+                            measureRu = "часа";
+
+                        } else if (/^(21)$/.test(downtime)) {
+                            measureRu = "час";
+                        } else {
+                            measureRu = "часов";
+                        }
                         break;
-                    case:
-
+                    case "hour":
+                        measureRu = "час";
                         break;
-                    case:
-
+                    case "day":
+                        measureRu = "день";
                         break;
-                    case:
-
+                    case "days":
+                        measureRu = "дня";
                         break;
-                    case:
-
+                    case "min":
+                        measureEng = "minutes";
+                        measureRu = "минут";
                         break;
 
-                }*/
+                }
+
+                document.getElementById("downtime-eng").innerHTML = "service will be unavailable for " + downtime + " " + measureEng + ".";
+                document.getElementById("downtime-ru").innerHTML = "сервис будет недоступен " + downtime + " " + measureRu + ".";
 
 
-                alert(downtime + " " + measureEng);
+
+                // 2 3 4 22 23 24 
+                // 1 21  
+                //alert(downtime + " " + measureRu);
 
             }
 
