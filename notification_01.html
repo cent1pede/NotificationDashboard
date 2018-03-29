@@ -197,16 +197,22 @@
 
         }
 
+        .textboxes-service {
+            height: 70px;
+            width: 400px;
+
+        }
+
         .downtime-controls {
-            display: flex;
-            justify-content: space-between;
-            width: 300px;
+            display: flex; //justify-content: space-between;
+            width: 400px;
+            height: 70px;
         }
 
         .downtime-header {}
 
         .control {
-            margin: 0 0 0 5px;
+            margin: 0 7px 0 7px;
 
         }
 
@@ -224,7 +230,10 @@
 
 <body lang=RU link="#0563C1" vlink="#954F72">
     <div class="controls" style="display: block;position: absolute;">
-
+        <div class="reminder">
+            <p class="downtime-header">Reminder?</p>
+            <input type="checkbox" id="reminder" onclick="enableReminder()" />
+        </div>
         <p class="note-box">Текст на английском</p>
         <textarea id="insert-note-en" class="textboxes">During the maintenance works</textarea><br>
         <p class="note-box">Текст на русском</p>
@@ -241,26 +250,33 @@
 
         <!--        <input type="text" id="insert-service">-->
         <p class="name">Сервисы</p>
-        <textarea id="insert-service" class="textboxes"></textarea><br>
+        <textarea id="insert-service" class="textboxes-service"></textarea><br>
+        <form action="">
+            <div class="downtime-controls">
 
-        <div class="downtime-controls">
-            <div class="control">
-                <p class="downtime-header">No downtime</p>
-                <input type="checkbox" id="nodowntime" name="Нет даунтайма" onclick="noDowntime()" />
+                <div class="control">
+                    <p class="downtime-header">No downtime</p>
+                    <input type="radio" id="nodowntime" name="downtime" onclick="noDowntime()" />
+                </div>
+                <div class="control">
+                    <p class="downtime-header">X раз по Y</p>
+                    <input type="radio" id="downtime-x-y" name="downtime" onclick="noDowntime()" />
+                </div>
+                <div class="control">
+                    <p class="downtime-header">X часов/минут</p>
+                    <input type="radio" id="downtime-x" name="downtime" onclick="noDowntime()" />
+                </div>
+
             </div>
-            <div class="control">
-                <p class="downtime-header">X раз по Y</p>
-                <input type="checkbox" id="downtime-x-y" name="Даунтайм x раз по y" onclick="noDowntime()" />
+            <div class="downtimedigits">
+                <p>Введите Downtime из Remedy</p>
+                <input type="text" id="downtime"><br>
             </div>
-            <div class="control">
-                <p class="downtime-header">X часов/минут</p>
-                <input type="checkbox" id="downtime-x" name="Нет даунтайма" onclick="noDowntime()" />
-            </div>
-        </div>
+        </form>
         <p class="name">Дата и время начала CRQ из Remedy</p>
         <input type="text" id="crq-date-start" value="4/4/2018 11:00:00 AM"><br>
         <p class="name">Дата и время окончания CRQ из Remedy</p>
-        <input type="text" id="crq-date-end" value="4/4/2018 12:00:00 PM"><br>
+        <input type="text" id="crq-date-end" value="4/4/2018 12:00:00 PM"><br><br>
 
         <button onclick="fillDateTime()">Заполнить даты </button>
 
@@ -283,7 +299,7 @@
                                                             <p class=MsoNormal align=center style='text-align:center;line-height:12.0pt'><span style='font-family:"Arial",sans-serif;color:#575757;text-transform:uppercase'>EN</span><span style='font-family:"Arial",sans-serif'><o:p></o:p></span></p>
                                                         </td>
                                                         <td style='padding:6.0pt 9.0pt 6.0pt 9.0pt'>
-                                                            <p class=MsoNormal><span lang=EN-US style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757'>During preventive maintenance works,</span><b><span lang=EN-US style='font-size:10.5pt;font-family:"Arial",sans-serif'><o:p></o:p></span></b></p>
+                                                            <p class=MsoNormal><span lang=EN-US style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757' id="alert-eng">During preventive maintenance works,</span><b><span lang=EN-US style='font-size:10.5pt;font-family:"Arial",sans-serif'><o:p></o:p></span></b></p>
                                                             <p class=MsoNormal><b><span lang=EN-US><o:p>&nbsp;</o:p></span></b></p>
                                                             <p class=MsoNormal><b><span lang=EN-US style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757' id="downtime-eng">service will be unavailable for 2 times 5&nbsp;minutes each.</span></b><span lang=EN-US style='font-family:"Arial",sans-serif'><o:p></o:p></span></p>
                                                         </td>
@@ -318,7 +334,7 @@
                                                             <p class=MsoNormal align=center style='text-align:center;line-height:12.0pt'><span style='font-family:"Arial",sans-serif;color:#575757;text-transform:uppercase'>RU</span><span style='font-size:12.0pt;font-family:"Arial",sans-serif'><o:p></o:p></span></p>
                                                         </td>
                                                         <td style='padding:6.0pt 9.0pt 6.0pt 9.0pt'>
-                                                            <p class=MsoNormal><span style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757'>Будут проводиться профилактические работы,</span><b><span style='font-size:10.5pt;font-family:"Arial",sans-serif'><o:p></o:p></span></b></p>
+                                                            <p class=MsoNormal><span style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757' id="alert-ru">Будут проводиться профилактические работы,</span><b><span style='font-size:10.5pt;font-family:"Arial",sans-serif'><o:p></o:p></span></b></p>
                                                             <p class=MsoNormal><b><o:p>&nbsp;</o:p></b></p>
                                                             <p class=MsoNormal><b><span style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757' id="downtime-ru">сервис будет недоступен 2 раза по 5 минут.</span></b><b><span style='font-family:"Arial",sans-serif'><o:p></o:p></span></b></p>
                                                         </td>
@@ -389,6 +405,19 @@
             } else {
                 document.getElementById('downtime-eng').innerHTML = "service will be unavailable for 2 times 5&nbsp;minutes each.";
                 document.getElementById('downtime-ru').innerHTML = "сервис будет недоступен 2 раза по 5 минут.";
+            }
+
+        }
+
+        //напоминалка
+        function enableReminder() {
+
+            if (document.getElementById("reminder").checked) {
+                document.getElementById('alert-eng').innerHTML = "Reminding about maintenance works,";
+                document.getElementById('alert-ru').innerHTML = "Напоминаем о профилактических работах,";
+            } else {
+                document.getElementById('alert-eng').innerHTML = "During preventive maintenance works,";
+                document.getElementById('alert-ru').innerHTML = "Будут проводиться профилактические работы,";
             }
 
         }
@@ -494,7 +523,7 @@
             //если CRQ более чем на 1 день
             if (formDateStart.value.split(" ")[0] != formDateEnd.value.split(" ")[0]) {
 
-                
+
                 //собрали красивые данные в строку
                 var intervalDateEng = dayStart + " " + monthsArrayStart[0] + " " + timeStart + " — <br>" + dayEnd + " " + monthsArrayEnd[0] + " " + timeEnd,
                     intervalDateRu = dayStart + " " + monthsArrayStart[1] + " " + timeStart + " — <br>" + dayEnd + " " + monthsArrayEnd[1] + " " + timeEnd;
@@ -518,7 +547,7 @@
                 emptySpaceRu.setAttribute("style", "display:none");
 
             } else {
-                
+
                 //если стандартная нотификация(работы в 1 день)
                 document.getElementById("date-ru").innerHTML = dateRu;
                 document.getElementById("date-eng").innerHTML = dateEng;
