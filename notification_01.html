@@ -245,7 +245,11 @@
         }
 
         .required-fields::placeholder {
-            filter: opacity(50%);
+            filter: opacity(45%);
+        }
+        
+        #mytable {
+                        outline: 5px solid red;
         }
 
 
@@ -272,17 +276,6 @@
         <textarea id="insert-note-en" class="textboxes">During the maintenance works we will</textarea><br>
         <p class="note-box">Текст на русском</p>
         <textarea id="insert-note-ru" class="textboxes">Во время проведения работ мы</textarea><br>
-
-        <!--
-        <p class="name">Дата на английском</p>
-        <input type="text" id="insert-date-en"><br>
-        <p class="name">Дата на русском</p>
-        <input type="text" id="insert-date-ru"><br>
-        <p class="name">Время</p>
-        <input type="text" id="insert-time"><br>
--->
-
-        <!--        <input type="text" id="insert-service">-->
         <p class="name">Сервисы</p>
         <textarea id="insert-service" class="textboxes-service"></textarea><br>
 
@@ -300,9 +293,6 @@
         <div class="downtimedigits" id="defaultdowntimeform">
             <p class="downtime-insert-header">Введите Downtime из Remedy</p>
             <input class="required-fields" type="text" id="downtime" placeholder="up to 8 hours"><br><br>
-
-
-            <!--                <button type="button" onclick="parseDowntime()">Заполнить Downtime </button>-->
         </div>
         <div class="downtime-free" id="freedowntimeform">
             <p class="downtime-insert-header">Введите текст Downtime на английском</p>
@@ -320,12 +310,12 @@
 
     </div>
     <br>
-    <div class=WordSection1>
-        <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width="100%" style='width:100.0%;border-collapse:collapse'>
+    <div class=WordSection1 >
+        <table  class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width="100%" style='width:100.0%;border-collapse:collapse'>
             <tr>
                 <td valign=top style='padding:0cm 0cm 0cm 0cm'>
                     <div align=center>
-                        <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=0 style='width:465.0pt;border-collapse:collapse'>
+                        <table id="notification-outline" class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=0 style='width:465.0pt;border-collapse:collapse'>
                             <tr>
                                 <td style='background:#E6E7E8;padding:7.5pt 7.5pt 7.5pt 7.5pt'>
                                     <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=0 style='width:450.0pt;background:white;border-collapse:collapse'>
@@ -337,9 +327,9 @@
                                                             <p class=MsoNormal align=center style='text-align:center;line-height:12.0pt'><span style='font-family:"Arial",sans-serif;color:#575757;text-transform:uppercase'>EN</span><span style='font-family:"Arial",sans-serif'><o:p></o:p></span></p>
                                                         </td>
                                                         <td style='padding:6.0pt 9.0pt 6.0pt 9.0pt'>
-                                                            <p class=MsoNormal><span lang=EN-US style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757' id="alert-eng">During preventive maintenance works,</span><b><span lang=EN-US style='font-size:10.5pt;font-family:"Arial",sans-serif'><o:p></o:p></span></b></p>
+                                                            <p class=MsoNormal><span lang=EN-US style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757' id="alert-eng">During preventive maintenance works</span><b><span lang=EN-US style='font-size:10.5pt;font-family:"Arial",sans-serif'><o:p></o:p></span></b></p>
                                                             <p class=MsoNormal><b><span lang=EN-US><o:p>&nbsp;</o:p></span></b></p>
-                                                            <p class=MsoNormal><b><span lang=EN-US style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757' id="downtime-eng">service will be unavailable for 2 times 5&nbsp;minutes each.</span></b><span lang=EN-US style='font-family:"Arial",sans-serif'><o:p></o:p></span></p>
+                                                            <p class=MsoNormal><b><span lang=EN-US style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757' id="downtime-eng">service</span></b><span lang=EN-US style='font-family:"Arial",sans-serif'><o:p></o:p></span></p>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -347,15 +337,15 @@
                                                 <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width="100%" style='width:100.0%;border-collapse:collapse;border-spacing: 0px'>
                                                     <tr>
                                                         <td width=359 style='width:269.25pt;border:solid #D4A001 3.0pt;padding:6.0pt 7.5pt 6.0pt 7.5pt'>
-                                                            <p class=MsoNormal style='line-height:15.6pt'><i><span lang=EN-US style='font-family:"Arial",sans-serif;color:#575757;white-space: pre-wrap;'id="service-eng">POSA</span></i><i><span lang=EN-US style='font-size:12.0pt;font-family:"Arial",sans-serif'><o:p></o:p></span></i></p>
+                                                            <p class=MsoNormal style='line-height:15.6pt'><i><span lang=EN-US style='font-family:"Arial",sans-serif;color:#575757;white-space: pre-wrap;'id="service-eng"></span></i><i><span lang=EN-US style='font-size:12.0pt;font-family:"Arial",sans-serif'><o:p></o:p></span></i></p>
                                                         </td>
                                                         <td nowrap style='border:solid #E6E7E8 3.0pt;border-left:none;background:#E6E7E8;padding:6.0pt 7.5pt 6.0pt 7.5pt'>
-                                                            <p class=MsoNormal style='line-height:15.6pt'><span lang=EN-US style='font-family:"Arial",sans-serif;color:#575757' id="date-eng">27 March</span><b><br><span style='font-family:"Arial",sans-serif;color:#575757' id="time-eng">7:30-10:00</span></b><span lang=EN-US style='font-family:"Arial",sans-serif' id="toggleBoldTimeEng"><br></span><span lang=EN-US style='font-size:10.0pt;font-family:"Arial",sans-serif;color:#575757'>(Moscow time)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span lang=EN-US style='font-family:"Arial",sans-serif'><o:p></o:p></span></p>
+                                                            <p class=MsoNormal style='line-height:15.6pt'><span lang=EN-US style='font-family:"Arial",sans-serif;color:#575757' id="date-eng">1 January</span><b><br><span style='font-family:"Arial",sans-serif;color:#575757' id="time-eng">01:00 &ndash; 01:10</span></b><span lang=EN-US style='font-family:"Arial",sans-serif' id="toggleBoldTimeEng"><br></span><span lang=EN-US style='font-size:10.0pt;font-family:"Arial",sans-serif;color:#575757'>(Moscow time)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span lang=EN-US style='font-family:"Arial",sans-serif'><o:p></o:p></span></p>
                                                         </td>
                                                     </tr>
                                                 </table>
                                                 <!--                                                <p style='margin:0cm;margin-bottom:.0001pt;mso-line-height-alt:0pt'><span lang=EN-US style='font-size:10.5pt;font-family:"Arial",sans-serif'><o:p>&nbsp;</o:p></span></p>-->
-                                                <p style='text-align:justify;mso-line-height-alt:0pt'><span lang=EN-US style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757' id="note-eng">During the maintenance works we will migrate the service to new infrastructure. Two short downtimes are expected (5 minutes each): on 8:15 and 9:00 MSK.<o:p></o:p></span></p>
+                                                <p style='text-align:justify;mso-line-height-alt:0pt'><span lang=EN-US style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757' id="note-eng">During the maintenance works we will<o:p></o:p></span></p>
                                                 <p style='margin:0cm;margin-bottom:.0001pt;text-align:justify;mso-line-height-alt:0pt'><span lang=EN-US style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757'>If you get any issues after the maintenance works feel free to contact us in any available way.<o:p></o:p></span></p>
                                             </td>
                                         </tr>
@@ -374,7 +364,7 @@
                                                         <td style='padding:6.0pt 9.0pt 6.0pt 9.0pt'>
                                                             <p class=MsoNormal><span style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757' id="alert-ru">Будут проводиться профилактические работы,</span><b><span style='font-size:10.5pt;font-family:"Arial",sans-serif'><o:p></o:p></span></b></p>
                                                             <p class=MsoNormal><b><o:p>&nbsp;</o:p></b></p>
-                                                            <p class=MsoNormal><b><span style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757' id="downtime-ru">сервис будет недоступен 2 раза по 5 минут.</span></b><b><span style='font-family:"Arial",sans-serif'><o:p></o:p></span></b></p>
+                                                            <p class=MsoNormal><b><span style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757' id="downtime-ru">сервис</span></b><b><span style='font-family:"Arial",sans-serif'><o:p></o:p></span></b></p>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -382,17 +372,17 @@
                                                 <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width="100%" style='width:100.0%;border-collapse:collapse;border-spacing: 0px'>
                                                     <tr>
                                                         <td width=362 style='width:271.5pt;border:solid #D4A001 3.0pt;padding:6.0pt 7.5pt 6.0pt 7.5pt'>
-                                                            <p class=MsoNormal style='line-height:15.6pt'><i><span lang=EN-US style='font-family:"Arial",sans-serif;color:#575757;white-space: pre-wrap;' id="service-ru">POSA</span></i><i><span style='font-size:12.0pt;font-family:"Arial",sans-serif'><o:p></o:p></span></i></p>
+                                                            <p class=MsoNormal style='line-height:15.6pt'><i><span lang=EN-US style='font-family:"Arial",sans-serif;color:#575757;white-space: pre-wrap;' id="service-ru"></span></i><i><span style='font-size:12.0pt;font-family:"Arial",sans-serif'><o:p></o:p></span></i></p>
                                                         </td>
                                                         <td nowrap style='border:solid #E6E7E8 3.0pt;border-left:none;background:#E6E7E8;padding:6.0pt 7.5pt 6.0pt 7.5pt'>
-                                                            <p class=MsoNormal style='line-height:15.6pt'><span style='font-family:"Arial",sans-serif;color:#575757' id="date-ru">27 Марта</span><b><br><span style='font-family:"Arial",sans-serif;color:#575757' id="time-ru" >7:30-10:00</span></b><span style='font-family:"Arial",sans-serif' id="toggleBoldTimeRu"><br></span><span style='font-size:10.0pt;font-family:"Arial",sans-serif;color:#575757'>(Московское время)</span><span style='font-family:"Arial",sans-serif'><o:p></o:p></span></p>
+                                                            <p class=MsoNormal style='line-height:15.6pt'><span style='font-family:"Arial",sans-serif;color:#575757' id="date-ru">1 января</span><b><br><span style='font-family:"Arial",sans-serif;color:#575757' id="time-ru" >01:00 &ndash; 01:10</span></b><span style='font-family:"Arial",sans-serif' id="toggleBoldTimeRu"><br></span><span style='font-size:10.0pt;font-family:"Arial",sans-serif;color:#575757'>(Московское время)</span><span style='font-family:"Arial",sans-serif'><o:p></o:p></span></p>
                                                         </td>
                                                     </tr>
                                                 </table>
                                                 <p style='margin:0cm;margin-bottom:.0001pt;mso-line-height-alt:0pt'><span style='font-size:11.0pt;font-family:"Calibri",sans-serif'><o:p>&nbsp;</o:p></span></p>
-                                                <p style='margin:0cm;margin-bottom:.0001pt;text-align:justify;mso-line-height-alt:0pt'><span style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757' id="note-ru">Во время проведения работ мы мигрируем сервис на новую инфраструктуру. Ожидается 2 перерыва в работе (5 минут каждый): в 8:15 и 9:00 МСК.<o:p></o:p></span></p>
+                                                <p style='margin:0cm;margin-bottom:.0001pt;text-align:justify;mso-line-height-alt:0pt'><span style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757' id="note-ru">Во время проведения работ мы<o:p></o:p></span></p>
                                                 <p style='margin:0cm;margin-bottom:.0001pt;text-align:justify;mso-line-height-alt:0pt'><span style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757'><o:p>&nbsp;</o:p></span></p>
-                                                <p style='margin:0cm;margin-bottom:.0001pt;text-align:justify;mso-line-height-alt:0pt'><span style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757'>Если возникли какие-либо трудности после проведённых работ, свяжитесь с нами любым доступным способом.</span><span style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#1F497D'><o:p></o:p></span></p>
+                                                <p style='margin:0cm;margin-bottom:.0001pt;text-align:justify;mso-line-height-alt:0pt'><span style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#575757'>Если у вас возникнут какие-либо трудности после проведённых работ, свяжитесь с нами любым доступным способом.</span><span style='font-size:10.5pt;font-family:"Arial",sans-serif;color:#1F497D'><o:p></o:p></span></p>
                                             </td>
                                         </tr>
                                         <tr>
@@ -418,6 +408,9 @@
 
 <footer>
     <script>
+        
+        
+        //по чекбоксу  nodowntime очищаем поле downtime, дизейблим его и заполняем текст о даунтайме в нотификации
         function noDowntime() {
 
             if (document.getElementById("nodowntime").checked) {
@@ -425,39 +418,34 @@
                 document.getElementById("downtime").value = "";
                 document.getElementById('downtime-eng').innerHTML = "service will be fully available.";
                 document.getElementById('downtime-ru').innerHTML = "сервис будет полностью доступен.";
+                document.getElementById("downtime").setAttribute("placeholder","");
             } else {
                 document.getElementById("downtime").disabled = false;
-                document.getElementById('downtime-eng').innerHTML = "service will be unavailable for 2 times 5&nbsp;minutes each.";
-                document.getElementById('downtime-ru').innerHTML = "сервис будет недоступен 2 раза по 5 минут.";
+                
+                document.getElementById("downtime").setAttribute("placeholder","up to 8 hours");
+                document.getElementById('downtime-eng').innerHTML = "service";
+                document.getElementById('downtime-ru').innerHTML = "сервис";
             }
 
 
 
         }
 
-        //напоминалка
+        //если нажат чекбокс заполняем during the maintenance works
         function enableReminder() {
 
             if (document.getElementById("reminder").checked) {
                 document.getElementById('alert-eng').innerHTML = "Reminding about maintenance works,";
                 document.getElementById('alert-ru').innerHTML = "Напоминаем о профилактических работах,";
             } else {
-                document.getElementById('alert-eng').innerHTML = "During preventive maintenance works,";
+                document.getElementById('alert-eng').innerHTML = "During preventive maintenance works";
                 document.getElementById('alert-ru').innerHTML = "Будут проводиться профилактические работы,";
             }
-
-
 
         }
 
 
-
-
-
-
-
-        //3/29/2018 12:00:00 AM
-
+        //функция получает на вход объект полученный по Id в виде даты типа 3/20/2018 12:28:12 PM, и возвращает массив с названием месяца на английском и на русском
         function numberToMonth(unrefinedDate) {
             var crqMonth = unrefinedDate.value.split(" ")[0].split("/")[0];
             var enMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -474,7 +462,8 @@
 
 
 
-
+        //по клику на чекбокс freedowntime очищает поле downtime, скрывает дефолтную форму ввода даунтайма и показывает форму свободного ввода. 
+        //По второму клику чистит свободную форму и совершает обратную операцию над формами
         function freeDowntime() {
             if (document.getElementById("freedowntime").checked) {
 
@@ -506,7 +495,7 @@
         }
 
 
-
+        //на вход получаем объект, вытаскиваем из него время и переводим в человеческий 24-часовой вид
         function parseTime(unrefinedDate) {
 
             var crqTime = unrefinedDate.value.split(" ")[1].slice(0, -3);
@@ -529,13 +518,12 @@
 
             }
 
-
             return refinedTime;
-
 
         }
 
-
+        
+        //подцепляем все данные из форм, трансформируем их функциями и заполняем ими нашу нотификацию
         function fillDateTime() {
 
             if ((!document.getElementById("crq-date-start").value == "") && (!document.getElementById("crq-date-end").value == "")) {
@@ -562,7 +550,7 @@
 
                 var dateEng = dayStart + " " + monthsArrayStart[0],
                     dateRu = dayStart + " " + monthsArrayStart[1],
-                    interval = timeStart + "-" + timeEnd;
+                    interval = timeStart + " &ndash; " + timeEnd;
 
 
 
@@ -610,7 +598,6 @@
                 //заполнили даунтайм
                 //На всякий случай проверяем, что дефолтное значение текстбокса downtime не пустое, пустое оно по умолчанию, либо если нажат чекбокс freedowntime; поле чистится в функции freeDowntime()
 
-
                 if (!document.getElementById("nodowntime").checked) {
                     if (!document.getElementById("downtime").value == "") {
                         parseDowntime();
@@ -620,12 +607,14 @@
                     }
 
                 }
-
+                
+                document.getElementById("notification-outline").setAttribute("style", "outline:none");
 
             } else alert("Заполните поля начала и окончания CRQ");
         }
 
-
+        
+        //функция берёт значение из дефолтного поля downtime, и в зависимости от значений заполняет текста даунтайма
         function parseDowntime() {
 
             var dt = document.getElementById("downtime").value;
