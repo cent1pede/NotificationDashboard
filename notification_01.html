@@ -1,6 +1,10 @@
 <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml" xmlns="http://www.w3.org/TR/REC-html40">
 
 <head>
+    <script src="http://www.datejs.com/build/date.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
     <meta http-equiv=Content-Type content="text/html; charset=UTF-8">
     <meta name=Generator content="Microsoft Word 15 (filtered medium)">
     <style>
@@ -247,10 +251,13 @@
         .required-fields::placeholder {
             filter: opacity(45%);
         }
-        
+
         #mytable {
-                        outline: 5px solid red;
+            outline: 5px solid red;
         }
+
+
+
 
 
         -->
@@ -267,6 +274,12 @@
 
 <body lang=RU link="#0563C1" vlink="#954F72">
     <div class="controls" style="display: block;position: absolute;">
+        <div class="change">
+            <p>Введите номер Change Request из remedy</p>
+            <input type="text" class="changefield" id="changefield" value="CRQ000000058452">
+            <button onclick="getSingleChangeInfo()">Заполнить из CRQ</button><br><br>
+            <button id="copybutton" data-clipboard-target="#notification">Копировать в буфер обмена</button>
+        </div>
 
         <div class="reminder">
             <p class="downtime-header">Reminder?</p>
@@ -287,8 +300,6 @@
                 <p class="downtime-header-2">Ввести свой downtime текст </p>
                 <input type="checkbox" id="freedowntime" class="downtime-checkbox" onclick="freeDowntime()" />
             </div>
-
-
         </div>
         <div class="downtimedigits" id="defaultdowntimeform">
             <p class="downtime-insert-header">Введите Downtime из Remedy</p>
@@ -310,8 +321,8 @@
 
     </div>
     <br>
-    <div class=WordSection1 >
-        <table  class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width="100%" style='width:100.0%;border-collapse:collapse'>
+    <div class=WordSection1 id="notification">
+        <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width="100%" style='width:100.0%;border-collapse:collapse'>
             <tr>
                 <td valign=top style='padding:0cm 0cm 0cm 0cm'>
                     <div align=center>
@@ -408,8 +419,6 @@
 
 <footer>
     <script>
-        
-        
         //по чекбоксу  nodowntime очищаем поле downtime, дизейблим его и заполняем текст о даунтайме в нотификации
         function noDowntime() {
 
@@ -418,11 +427,11 @@
                 document.getElementById("downtime").value = "";
                 document.getElementById('downtime-eng').innerHTML = "service will be fully available.";
                 document.getElementById('downtime-ru').innerHTML = "сервис будет полностью доступен.";
-                document.getElementById("downtime").setAttribute("placeholder","");
+                document.getElementById("downtime").setAttribute("placeholder", "");
             } else {
                 document.getElementById("downtime").disabled = false;
-                
-                document.getElementById("downtime").setAttribute("placeholder","up to 8 hours");
+
+                document.getElementById("downtime").setAttribute("placeholder", "up to 8 hours");
                 document.getElementById('downtime-eng').innerHTML = "service";
                 document.getElementById('downtime-ru').innerHTML = "сервис";
             }
@@ -459,7 +468,6 @@
             return bothMonths;
 
         }
-
 
 
         //по клику на чекбокс freedowntime очищает поле downtime, скрывает дефолтную форму ввода даунтайма и показывает форму свободного ввода. 
@@ -504,17 +512,23 @@
             var input = crqTime,
                 matches = input.toLowerCase().match(/(\d{1,2}):(\d{2}) ([ap]m)/);
             var refinedTime;
+            var tempTime = matches[0];
+
+            
+            
+            if (/12:\d{2} am/.test(tempTime)) {
+
+                refinedTime = tempTime.replace(/12/g, "00");
+                refinedTime = refinedTime.slice(0, -3);
 
 
-            switch (matches[0]) {
-                case "12:00 am":
-                    refinedTime = "00:00";
-                    break;
-                case "12:00 pm":
-                    refinedTime = "12:00"
-                    break;
-                default:
-                    refinedTime = (parseInt(matches[1]) + (matches[3] == 'pm' ? 12 : 0)) + ':' + matches[2];
+            } else if (/12:\d{2} pm/.test(tempTime)) {
+
+                refinedTime = tempTime.replace(/^12/g, "12");
+                refinedTime = refinedTime.slice(0, -3);
+            } else {
+
+                refinedTime = (parseInt(matches[1]) + (matches[3] == 'pm' ? 12 : 0)) + ':' + matches[2];
 
             }
 
@@ -522,7 +536,7 @@
 
         }
 
-        
+
         //подцепляем все данные из форм, трансформируем их функциями и заполняем ими нашу нотификацию
         function fillDateTime() {
 
@@ -607,13 +621,13 @@
                     }
 
                 }
-                
+
                 document.getElementById("notification-outline").setAttribute("style", "outline:none");
 
             } else alert("Заполните поля начала и окончания CRQ");
         }
 
-        
+
         //функция берёт значение из дефолтного поля downtime, и в зависимости от значений заполняет текста даунтайма
         function parseDowntime() {
 
@@ -669,9 +683,114 @@
                 document.getElementById("downtime-ru").innerHTML = "сервис будет недоступен " + downtime + " " + measureRu + ".";
 
 
+
             }
 
         }
+        
+        
+
+        //функция получения информации по одному чейнджу
+        function getSingleChangeInfo() {
+
+            var response;
+            var userCRQ = document.getElementById("changefield").value;
+
+            var requestString = 'requeststr= SELECT [Infrastructure_change_ID],[ServiceCI],[KSP_Downtime],[Scheduled_Start_Date],[Scheduled_End_Date] FROM [hqitsm-db-arsys].[ARSystem].[dbo].[CHG_Infrastructure_Change] WHERE Infrastructure_Change_ID =\'' + userCRQ + '\'';
+
+            var myconnection = $.ajax({
+                mimeType: 'multipart/form-data',
+                data: requestString,
+                method: 'POST',
+                async: false,
+                url: 'https://dutydashboard.avp.ru/ITSM_Reports_API/Home/Request',
+                processData: false,
+                success: function(msg) {
+                    response = msg;
+                }
+            });
+
+
+            response = JSON.parse(response);
+
+
+            document.getElementById("crq-date-start").value = convertUnixDate(response[0].Scheduled_Start_Date);
+            document.getElementById("crq-date-end").value = convertUnixDate(response[0].Scheduled_End_Date);
+            document.getElementById("insert-service").value = response[0].ServiceCI;
+
+
+            if (response[0].KSP_Downtime == "no downtime") {
+                document.getElementById("nodowntime").checked = true;
+                noDowntime();
+
+            } else {
+                document.getElementById("downtime").value = response[0].KSP_Downtime;
+            }
+
+            fillDateTime();
+
+        }
+        
+        
+        //функция конвертирования из unix-даты в en-US формат
+        function convertUnixDate(unixdate) {
+
+            var curTime = new Date("1970-01-01");
+            curTime.setSeconds(curTime.getSeconds() + unixdate);
+
+            var tempDate = curTime.toLocaleDateString("en-US");
+            var tempTime = curTime.toLocaleTimeString("en-US");
+
+            var refinedDate = tempDate + " " + tempTime;
+
+            return refinedDate;
+
+        }
+
+        //функция копирования ричтекста
+        function copyToClip(str) {
+            function listener(e) {
+                e.clipboardData.setData("text/html", str);
+                e.clipboardData.setData("text/plain", str);
+                e.preventDefault();
+            }
+            document.addEventListener("copy", listener);
+            document.execCommand("copy");
+            document.removeEventListener("copy", listener);
+        };
+
+        
+        
+        $(document).ready(function() {
+        new ClipboardJS("#copybutton");
+
+            
+        //real-time заполнение полей уведомления из формы    
+        var oldVal = "";
+        $("#insert-note-en").on("change keyup paste", function() {
+            var currentVal = $(this).val();
+            if (currentVal == oldVal) {
+                return; 
+            }
+
+            oldVal = currentVal;
+            
+            document.getElementById("note-eng").innerHTML = document.getElementById("insert-note-en").value;
+        });
+
+        $("#insert-note-ru").on("change keyup paste", function() {
+            var currentVal = $(this).val();
+            if (currentVal == oldVal) {
+                return; 
+            }
+
+            oldVal = currentVal;
+           
+            document.getElementById("note-ru").innerHTML = document.getElementById("insert-note-ru").value;
+        });
+
+
+        });
 
     </script>
 </footer>
