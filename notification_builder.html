@@ -276,7 +276,7 @@
     <div class="controls" style="display: block;position: absolute;">
         <div class="change">
             <p>Введите номер Change Request из remedy</p>
-            <input type="text" class="changefield" id="changefield" value="CRQ000000058452">
+            <input type="text" class="changefield" id="changefield">
             <button onclick="getSingleChangeInfo()">Заполнить из CRQ</button><br><br>
             <button id="copybutton" data-clipboard-target="#notification">Копировать в буфер обмена</button>
         </div>
@@ -348,7 +348,7 @@
                                                 <table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width="100%" style='width:100.0%;border-collapse:collapse;border-spacing: 0px'>
                                                     <tr>
                                                         <td width=359 style='width:269.25pt;border:solid #D4A001 3.0pt;padding:6.0pt 7.5pt 6.0pt 7.5pt'>
-                                                            <p class=MsoNormal style='line-height:15.6pt'><i><span lang=EN-US style='font-family:"Arial",sans-serif;color:#575757;white-space: pre-wrap;'id="service-eng"></span></i><i><span lang=EN-US style='font-size:12.0pt;font-family:"Arial",sans-serif'><o:p></o:p></span></i></p>
+                                                         <p class=MsoNormal style='line-height:15.6pt'><i><span lang=EN-US style='font-family:"Arial",sans-serif;color:#575757;white-space: pre-wrap;'id="service-eng"></span></i><i><span lang=EN-US style='font-size:12.0pt;font-family:"Arial",sans-serif'><o:p></o:p></span></i></p>
                                                         </td>
                                                         <td nowrap style='border:solid #E6E7E8 3.0pt;border-left:none;background:#E6E7E8;padding:6.0pt 7.5pt 6.0pt 7.5pt'>
                                                             <p class=MsoNormal style='line-height:15.6pt'><span lang=EN-US style='font-family:"Arial",sans-serif;color:#575757' id="date-eng">1 January</span><b><br><span style='font-family:"Arial",sans-serif;color:#575757' id="time-eng">01:00 &ndash; 01:10</span></b><span lang=EN-US style='font-family:"Arial",sans-serif' id="toggleBoldTimeEng"><br></span><span lang=EN-US style='font-size:10.0pt;font-family:"Arial",sans-serif;color:#575757'>(Moscow time)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span lang=EN-US style='font-family:"Arial",sans-serif'><o:p></o:p></span></p>
@@ -514,8 +514,8 @@
             var refinedTime;
             var tempTime = matches[0];
 
-            
-            
+
+
             if (/12:\d{2} am/.test(tempTime)) {
 
                 refinedTime = tempTime.replace(/12/g, "00");
@@ -546,8 +546,23 @@
                 document.getElementById("note-ru").innerHTML = document.getElementById("insert-note-ru").value;
                 document.getElementById("note-eng").innerHTML = document.getElementById("insert-note-en").value;
 
-                document.getElementById("service-ru").innerHTML = document.getElementById("insert-service").value;
-                document.getElementById("service-eng").innerHTML = document.getElementById("insert-service").value;
+                
+                //суперфукция пришивающая br к каждой строке из поля insert-service                
+                var servicetext = $("#insert-service").val().split("\n");
+                var serviceout= "";
+                
+                for (var i= 0;i<servicetext.length;i++){
+                    
+                    if(i!=servicetext.length-1){
+                        servicetext[i] = servicetext[i]+"<br>";
+                    }
+                    
+                    serviceout = serviceout + servicetext[i]
+                    
+                }
+                document.getElementById("service-ru").innerHTML = serviceout;
+                document.getElementById("service-eng").innerHTML = serviceout;
+                
 
 
 
@@ -682,13 +697,11 @@
                 document.getElementById("downtime-eng").innerHTML = "service will be unavailable for " + downtime + " " + measureEng + ".";
                 document.getElementById("downtime-ru").innerHTML = "сервис будет недоступен " + downtime + " " + measureRu + ".";
 
-
-
             }
 
         }
-        
-        
+
+
 
         //функция получения информации по одному чейнджу
         function getSingleChangeInfo() {
@@ -730,8 +743,8 @@
             fillDateTime();
 
         }
-        
-        
+
+
         //функция конвертирования из unix-даты в en-US формат
         function convertUnixDate(unixdate) {
 
@@ -759,35 +772,44 @@
             document.removeEventListener("copy", listener);
         };
 
-        
+
         
         $(document).ready(function() {
-        new ClipboardJS("#copybutton");
+            new ClipboardJS("#copybutton");
 
+
+            //real-time заполнение полей уведомления из формы    
+            var oldVal = "";
+            $("#insert-note-en").on("change keyup paste", function() {
+                var currentVal = $(this).val();
+                if (currentVal == oldVal) {
+                    return;
+                }
+
+                oldVal = currentVal;
+
+                document.getElementById("note-eng").innerHTML = document.getElementById("insert-note-en").value;
+            });
+
+            $("#insert-note-ru").on("change keyup paste", function() {
+                var currentVal = $(this).val();
+                if (currentVal == oldVal) {
+                    return;
+                }
+
+                oldVal = currentVal;
+
+                document.getElementById("note-ru").innerHTML = document.getElementById("insert-note-ru").value;
+            });
             
-        //real-time заполнение полей уведомления из формы    
-        var oldVal = "";
-        $("#insert-note-en").on("change keyup paste", function() {
-            var currentVal = $(this).val();
-            if (currentVal == oldVal) {
-                return; 
-            }
 
-            oldVal = currentVal;
-            
-            document.getElementById("note-eng").innerHTML = document.getElementById("insert-note-en").value;
-        });
+            $("#changefield").on("keydown", function(e) {
 
-        $("#insert-note-ru").on("change keyup paste", function() {
-            var currentVal = $(this).val();
-            if (currentVal == oldVal) {
-                return; 
-            }
+                if (e.which == 13) {
+                    getSingleChangeInfo();
+                }
 
-            oldVal = currentVal;
-           
-            document.getElementById("note-ru").innerHTML = document.getElementById("insert-note-ru").value;
-        });
+            });
 
 
         });
